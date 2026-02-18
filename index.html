@@ -11,340 +11,381 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; }
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
         .custom-scrollbar::-webkit-scrollbar { width: 8px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 10px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 10px; }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #475569; }
-        .table-input { @apply w-24 text-center p-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-cyan-500; }
+        
+        .card-base { @apply bg-white rounded-2xl shadow-xl border border-gray-100 p-6 md:p-8; }
+        .table-input { @apply w-full text-center p-1.5 border border-slate-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-cyan-600 focus:border-transparent transition-all; }
         
         .regua-valor-lucro { @apply w-full h-8 flex rounded-full overflow-hidden border border-gray-200 bg-gray-100 mt-2; }
         .regua-custo { @apply bg-gray-500 h-full flex items-center justify-center text-white text-xs font-bold transition-all duration-500; }
         .regua-lucro { @apply bg-green-500 h-full flex items-center justify-center text-white text-xs font-bold transition-all duration-500; }
         
         .select-input { @apply w-full text-center font-bold text-gray-800 border-b-2 border-gray-300 focus:outline-none focus:border-cyan-500 bg-white py-1; }
+        .sticky-th { position: sticky; top: 0; z-index: 20; background-color: #f8fafc; }
     </style>
 </head>
-<body class="bg-gray-50 p-4 md:p-8">
+<body class="p-4 md:p-8">
 
-    <div class="max-w-7xl mx-auto bg-white p-6 md:p-8 rounded-2xl shadow-xl border border-gray-100">
+    <div class="max-w-7xl mx-auto space-y-8">
 
-        <header id="header-proposta" class="border-b border-gray-200 pb-4 mb-6 flex flex-col md:flex-row items-center justify-between gap-4">
-            <div class="flex items-center gap-4">
-                <img id="logo-pdf" src="https://i.postimg.cc/8CXccsTc/sseducacao.png" alt="Logomarca Seduc-GO" class="h-12 md:h-16 w-auto object-contain">
-                <div class="text-left">
-                    <h1 class="text-xl md:text-2xl font-bold text-gray-800">Proposta de Parceria SESI</h1>
-                    <h2 class="text-sm md:text-lg font-semibold text-cyan-700 underline decoration-cyan-200 decoration-2">Modelo Especial: 2 Unidades - 5 Dias/Semana (300h)</h2>
+        <!-- CABEÇALHO -->
+        <header id="header-proposta" class="card-base relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-cyan-600 to-blue-600"></div>
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6 relative z-10">
+                <div class="flex items-center gap-6">
+                    <img id="logo-pdf" src="https://i.postimg.cc/8CXccsTc/sseducacao.png" alt="Logomarca Seduc-GO" class="h-16 w-auto object-contain">
+                    <div class="border-l-2 border-slate-100 pl-6 hidden md:block text-left">
+                        <h1 class="text-2xl font-black text-slate-800 tracking-tight">Proposta de Parceria SESI</h1>
+                        <h2 class="text-sm font-semibold text-cyan-700 uppercase tracking-wide">Modelo Especial: 2 Unidades - 300h</h2>
+                    </div>
+                </div>
+                <div class="bg-slate-50 px-6 py-3 rounded-xl border border-slate-100 shadow-sm text-center md:text-right">
+                    <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Vigência Letiva</span>
+                    <p class="text-sm font-bold text-slate-700">9 Meses / 180 Dias Letivos</p>
                 </div>
             </div>
         </header>
 
         <!-- BLOCO 1 -->
-        <div class="mb-6">
-            <h3 class="text-xl font-bold text-gray-800 border-l-4 border-cyan-600 pl-3">Bloco 1: Público-Alvo Selecionado</h3>
-        </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-            <div class="border border-gray-200 rounded-lg p-4 bg-gray-50 flex flex-col h-64 shadow-inner">
-                <h4 class="text-xs font-bold text-gray-400 uppercase mb-3 tracking-widest">Unidades no Projeto</h4>
-                <div id="lista-escolas" class="flex-1 overflow-y-auto custom-scrollbar pr-2 space-y-2">
-                </div>
+        <section class="card-base">
+            <div class="flex items-center gap-3 mb-6 border-b border-slate-50 pb-4">
+                <div class="bg-cyan-600 w-1.5 h-6 rounded-full"></div>
+                <h3 class="text-xl font-bold text-slate-800">Bloco 1: Público-Alvo Selecionado</h3>
             </div>
 
-            <div class="space-y-4">
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="bg-white border p-4 rounded text-center shadow-sm">
-                        <span class="text-xs text-gray-500 block uppercase tracking-wider">Total Escolas</span>
-                        <span id="total-escolas" class="text-3xl font-bold text-cyan-700">2</span>
-                    </div>
-                    <div class="bg-white border p-4 rounded text-center shadow-sm">
-                        <span class="text-xs text-gray-500 block uppercase tracking-wider">Total Turmas</span>
-                        <span id="total-turmas" class="text-3xl font-bold text-cyan-700">22</span>
-                    </div>
-                    <div class="bg-white border p-4 rounded text-center shadow-sm">
-                        <span class="text-xs text-gray-500 block uppercase tracking-wider">Alunos (Base)</span>
-                        <span id="total-alunos-base" class="text-3xl font-bold text-cyan-700">665</span>
-                    </div>
-                    <div class="bg-cyan-50 border border-cyan-100 p-4 rounded text-center shadow-sm">
-                        <span class="text-xs text-gray-500 block uppercase tracking-wider">Acréscimo Especiais (%)</span>
-                        <input type="number" id="acrescimo-percent" value="0" class="w-20 text-center font-bold text-2xl text-cyan-800 bg-transparent border-b-2 border-cyan-300 focus:outline-none">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="border border-gray-200 rounded-xl p-4 bg-gray-50 flex flex-col h-64 shadow-inner">
+                    <h4 class="text-xs font-bold text-gray-400 uppercase mb-3 tracking-widest">Unidades no Projeto</h4>
+                    <div id="lista-escolas" class="flex-1 overflow-y-auto custom-scrollbar pr-2 space-y-2">
                     </div>
                 </div>
-                <div class="bg-cyan-600 text-white p-5 rounded-lg shadow-lg text-center">
-                    <span class="text-sm block opacity-90 uppercase tracking-widest mb-1">Público-Alvo Estimado</span>
-                    <span id="total-alunos-final" class="text-4xl font-extrabold">665</span>
+
+                <div class="space-y-4">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-white border p-4 rounded-xl text-center shadow-sm">
+                            <span class="text-xs text-gray-500 block uppercase tracking-wider">Total Escolas</span>
+                            <span id="total-escolas" class="text-3xl font-black text-cyan-700">2</span>
+                        </div>
+                        <div class="bg-white border p-4 rounded-xl text-center shadow-sm">
+                            <span class="text-xs text-gray-500 block uppercase tracking-wider">Total Turmas</span>
+                            <span id="total-turmas" class="text-3xl font-black text-cyan-700">22</span>
+                        </div>
+                        <div class="bg-white border p-4 rounded-xl text-center shadow-sm">
+                            <span class="text-xs text-gray-500 block uppercase tracking-wider">Alunos (Base)</span>
+                            <span id="total-alunos-base" class="text-3xl font-black text-cyan-700">665</span>
+                        </div>
+                        <div class="bg-cyan-50 border border-cyan-100 p-4 rounded-xl text-center shadow-sm">
+                            <span class="text-xs text-gray-500 block uppercase tracking-wider">Acréscimo Especiais (%)</span>
+                            <input type="number" id="acrescimo-percent" value="0" class="w-20 text-center font-black text-2xl text-cyan-800 bg-transparent border-b-2 border-cyan-300 focus:outline-none">
+                        </div>
+                    </div>
+                    <div class="bg-cyan-600 text-white p-5 rounded-2xl shadow-lg text-center relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-24 h-24 bg-white/5 rounded-full -mr-12 -mt-12"></div>
+                        <span class="text-sm block opacity-90 uppercase tracking-widest mb-1 relative z-10">Público-Alvo Estimado (Efetivo)</span>
+                        <span id="total-alunos-final" class="text-4xl font-black relative z-10">665</span>
+                    </div>
                 </div>
             </div>
-        </div>
+        </section>
 
         <!-- BLOCO 2 -->
-        <div class="mb-8 border-t border-gray-200 pt-8">
-            <h3 class="text-xl font-bold text-gray-800 border-l-4 border-cyan-600 pl-3 mb-6">Bloco 2: Custos Operacionais (OPEX)</h3>
+        <section class="card-base">
+            <div class="flex items-center gap-3 mb-6 border-b border-slate-50 pb-4">
+                <div class="bg-cyan-600 w-1.5 h-6 rounded-full"></div>
+                <h3 class="text-xl font-bold text-slate-800">Bloco 2: Custos Operacionais (OPEX)</h3>
+            </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                <div class="bg-white p-5 rounded-lg border border-gray-200 shadow-sm">
-                    <label class="text-xs text-gray-500 block text-center mb-2 uppercase">Modelo de Atendimento</label>
-                    <select id="opex-modelo-atendimento" class="w-full p-2 bg-gray-50 rounded border font-bold text-gray-700">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 shadow-sm">
+                    <label class="text-xs font-bold text-slate-500 block text-center mb-2 uppercase">Modelo de Atendimento</label>
+                    <select id="opex-modelo-atendimento" class="w-full p-2 bg-white rounded-lg border border-slate-300 font-bold text-slate-700 focus:ring-2 focus:ring-cyan-600 outline-none transition-all">
                         <option value="300" selected>5 dias/sem (300h - 1.5h/dia)</option>
                         <option value="720">5 dias/sem (720h)</option>
                         <option value="432">3 dias/sem (432h)</option>
                         <option value="288">2 dias/sem (288h)</option>
                     </select>
                 </div>
-                <div class="bg-white p-5 rounded-lg border border-gray-200 shadow-sm text-center">
-                    <span class="text-xs text-gray-500 block uppercase">Período Letivo</span>
-                    <span class="text-2xl font-bold text-cyan-700">9 Meses (180 dias)</span>
+                <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 shadow-sm text-center">
+                    <span class="text-xs font-bold text-slate-500 block uppercase">Período Letivo Estimado</span>
+                    <span class="text-2xl font-black text-cyan-700">180 dias</span>
                 </div>
-                <div class="bg-white p-5 rounded-lg border border-gray-200 shadow-sm text-center">
-                    <span class="text-xs text-gray-500 block uppercase">Base de Cálculo</span>
-                    <span id="bl2-turmas-calc" class="text-2xl font-bold text-cyan-700">22 Turmas</span>
+                <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 shadow-sm text-center">
+                    <span class="text-xs font-bold text-slate-500 block uppercase">Turmas para Docência</span>
+                    <span id="bl2-turmas-calc" class="text-2xl font-black text-cyan-700">22 Turmas</span>
                 </div>
             </div>
 
             <!-- Custos Unitários -->
-            <div class="grid grid-cols-2 md:grid-cols-6 gap-2 mb-6 text-center">
-                <div class="bg-gray-50 p-2 rounded border border-gray-200">
-                    <label class="text-[9px] text-gray-500 block uppercase">Bolsa Monitor</label>
-                    <input type="number" id="opex-bolsa-monitor" value="1500" class="w-full bg-transparent text-center font-bold outline-none text-sm">
+            <div class="grid grid-cols-2 md:grid-cols-6 gap-3 mb-8 text-center">
+                <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-sm">
+                    <label class="text-[9px] font-bold text-slate-500 block uppercase tracking-tight">Bolsa Monitor</label>
+                    <input type="number" id="opex-bolsa-monitor" value="1500" class="w-full bg-transparent text-center font-black outline-none text-sm text-slate-700">
                 </div>
-                <div class="bg-gray-50 p-2 rounded border border-gray-200">
-                    <label class="text-[9px] text-gray-500 block uppercase">Hora Professor</label>
-                    <input type="number" id="opex-valor-hora-professor" value="220" class="w-full bg-transparent text-center font-bold outline-none text-sm">
+                <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-sm">
+                    <label class="text-[9px] font-bold text-slate-500 block uppercase tracking-tight">Hora Professor</label>
+                    <input type="number" id="opex-valor-hora-professor" value="220" class="w-full bg-transparent text-center font-black outline-none text-sm text-slate-700">
                 </div>
-                <div class="bg-gray-50 p-2 rounded border border-gray-200">
-                    <label class="text-[9px] text-gray-500 block uppercase">Refeição/Dia</label>
-                    <input type="number" id="opex-valor-refeicao" value="8.00" step="0.50" class="w-full bg-transparent text-center font-bold text-cyan-700 outline-none text-sm">
+                <div class="bg-orange-50 p-3 rounded-xl border border-orange-100 shadow-sm">
+                    <label class="text-[9px] font-bold text-orange-600 block uppercase tracking-tight">Refeição/Dia</label>
+                    <input type="number" id="opex-valor-refeicao" value="8.00" step="0.50" class="w-full bg-transparent text-center font-black text-orange-800 outline-none text-sm">
                 </div>
-                <div class="bg-gray-50 p-2 rounded border border-gray-200">
-                    <label class="text-[9px] text-gray-500 block uppercase">Sál. Assistente</label>
-                    <input type="number" id="opex-custo-assistente" value="5000" class="w-full bg-transparent text-center font-bold outline-none text-sm">
+                <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-sm">
+                    <label class="text-[9px] font-bold text-slate-500 block uppercase tracking-tight">Sál. Assistente</label>
+                    <input type="number" id="opex-custo-assistente" value="5000" class="w-full bg-transparent text-center font-black outline-none text-sm text-slate-700">
                 </div>
-                <div class="bg-gray-50 p-2 rounded border border-gray-200">
-                    <label class="text-[9px] text-gray-500 block uppercase">Sál. Analista II</label>
-                    <input type="number" id="opex-custo-analista2" value="7000" class="w-full bg-transparent text-center font-bold outline-none text-sm">
+                <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-sm">
+                    <label class="text-[9px] font-bold text-slate-500 block uppercase tracking-tight">Sál. Analista II</label>
+                    <input type="number" id="opex-custo-analista2" value="7000" class="w-full bg-transparent text-center font-black outline-none text-sm text-slate-700">
                 </div>
-                <div class="bg-gray-50 p-2 rounded border border-gray-200">
-                    <label class="text-[9px] text-gray-500 block uppercase">Sál. Analista III</label>
-                    <input type="number" id="opex-custo-analista3" value="9600" class="w-full bg-transparent text-center font-bold outline-none text-sm">
+                <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-sm">
+                    <label class="text-[9px] font-bold text-slate-500 block uppercase tracking-tight">Sál. Analista III</label>
+                    <input type="number" id="opex-custo-analista3" value="9600" class="w-full bg-transparent text-center font-black outline-none text-sm text-slate-700">
                 </div>
             </div>
 
             <!-- Totais OPEX -->
-            <div class="grid grid-cols-1 md:grid-cols-5 gap-3">
-                <div class="bg-white p-3 rounded-lg border border-gray-200 text-center shadow-sm">
-                    <span class="text-[10px] text-gray-400 block uppercase">Monitores</span>
-                    <span id="opex-custo-monitores" class="font-bold text-gray-700 text-sm block">R$ 0,00</span>
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                <div class="bg-white p-4 rounded-xl border border-slate-200 text-center shadow-sm">
+                    <span class="text-[10px] font-bold text-slate-400 block uppercase">Monitores (9m)</span>
+                    <span id="opex-custo-monitores" class="font-bold text-slate-700 text-sm block mt-1">R$ 0,00</span>
                 </div>
-                <div class="bg-white p-3 rounded-lg border border-gray-200 text-center shadow-sm">
-                    <span class="text-[10px] text-gray-400 block uppercase">Docência</span>
-                    <span id="opex-custo-professores" class="font-bold text-gray-700 text-sm block">R$ 0,00</span>
+                <div class="bg-white p-4 rounded-xl border border-slate-200 text-center shadow-sm">
+                    <span class="text-[10px] font-bold text-slate-400 block uppercase tracking-tighter">Docência (Professores)</span>
+                    <span id="opex-custo-professores" class="font-bold text-slate-700 text-sm block mt-1">R$ 0,00</span>
                 </div>
-                <div class="bg-white p-3 rounded-lg border border-gray-200 text-center shadow-sm border-l-4 border-l-cyan-500">
-                    <span class="text-[10px] text-cyan-600 block uppercase font-bold">Refeições</span>
-                    <span id="opex-custo-refeicoes" class="font-bold text-gray-700 text-sm block">R$ 0,00</span>
+                <div class="bg-orange-50 p-4 rounded-xl border border-orange-100 text-center shadow-sm">
+                    <span class="text-[10px] font-bold text-orange-600 block uppercase">Alimentação (Lanche)</span>
+                    <span id="opex-custo-refeicoes" class="font-bold text-orange-800 text-sm block mt-1">R$ 0,00</span>
                 </div>
-                <div class="bg-white p-3 rounded-lg border border-gray-200 text-center shadow-sm">
-                    <span class="text-[10px] text-gray-400 block uppercase">Equipe Técnica</span>
-                    <span id="opex-custo-equipe" class="font-bold text-gray-700 text-sm block">R$ 0,00</span>
+                <div class="bg-white p-4 rounded-xl border border-slate-200 text-center shadow-sm">
+                    <span class="text-[10px] font-bold text-slate-400 block uppercase">Equipe Técnica</span>
+                    <span id="opex-custo-equipe" class="font-bold text-slate-700 text-sm block mt-1">R$ 0,00</span>
                 </div>
-                <div class="bg-cyan-600 text-white p-3 rounded-lg text-center flex flex-col justify-center shadow-lg">
-                    <span class="text-[10px] opacity-75 block uppercase font-bold">Total OPEX (9 Meses)</span>
-                    <span id="opex-total-anual" class="text-lg font-extrabold">R$ 0,00</span>
+                <div class="bg-cyan-700 text-white p-4 rounded-xl text-center flex flex-col justify-center shadow-lg transform transition-transform hover:scale-105">
+                    <span class="text-[10px] font-bold opacity-80 block uppercase tracking-wider">Total OPEX (Anual)</span>
+                    <span id="opex-total-anual" class="text-xl font-black">R$ 0,00</span>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <!-- BLOCO 3 -->
-        <div class="mb-8 border-t border-gray-200 pt-8">
-            <h3 class="text-xl font-bold text-gray-800 border-l-4 border-cyan-600 pl-3 mb-6">Bloco 3: Custos de Aquisição (CAPEX)</h3>
+        <!-- BLOCO 3: CAPEX (NOVA ESTRUTURA EDITADA) -->
+        <section class="card-base">
+            <div class="flex items-center gap-3 mb-6 border-b border-slate-50 pb-4">
+                <div class="bg-cyan-600 w-1.5 h-6 rounded-full shadow-sm"></div>
+                <h3 class="text-xl font-bold text-slate-800">Bloco 3: Custos de Aquisição (CAPEX)</h3>
+            </div>
             
-            <div class="overflow-x-auto rounded-lg border border-gray-200">
-                <table class="min-w-full text-sm border-collapse bg-white">
-                    <thead class="bg-gray-100">
-                        <tr class="text-gray-600 uppercase text-[10px] leading-normal">
-                            <th class="py-3 px-4 text-left w-12">Esc.</th>
-                            <th class="py-3 px-4 text-left">Produto</th>
-                            <th class="py-3 px-4 text-center">Qtd. Unid.</th>
-                            <th class="py-3 px-4 text-left">Opção de Custo</th>
-                            <th class="py-3 px-4 text-right">Total</th>
+            <div class="overflow-x-auto rounded-xl border border-gray-200 shadow-sm mb-6 max-h-[500px] custom-scrollbar">
+                <table class="min-w-full text-sm bg-white relative">
+                    <thead class="bg-slate-100 text-slate-600 text-[10px] uppercase font-bold sticky-th">
+                        <tr>
+                            <th class="py-4 px-6 text-left w-10">Inc.</th>
+                            <th class="py-4 px-6 text-left">Item</th>
+                            <th class="py-4 px-6 text-center w-20">Qtd.</th>
+                            <th class="py-4 px-6 text-left">Unidade</th>
+                            <th class="py-4 px-6 text-left">Opção de Custo</th>
+                            <th class="py-4 px-6 text-right">Total</th>
                         </tr>
                     </thead>
-                    <tbody id="capex-tabela-itens" class="text-gray-700 divide-y divide-gray-100">
+                    <tbody id="capex-tabela-itens" class="text-slate-700 divide-y divide-slate-100 bg-white">
+                        <!-- Renderizado via JS -->
                     </tbody>
                 </table>
             </div>
-            <div class="mt-4 text-right">
-                 <div class="inline-block bg-cyan-600 text-white p-4 rounded-lg shadow-lg">
-                    <span class="text-xs opacity-75 block uppercase tracking-wider">Total CAPEX</span>
-                    <span id="capex-total-geral" class="text-2xl font-extrabold">R$ 0,00</span>
+            <div class="text-right">
+                <div class="inline-block bg-cyan-700 text-white px-10 py-5 rounded-2xl shadow-xl">
+                    <span class="text-xs font-bold opacity-80 block uppercase tracking-wider mb-1 text-center">Subtotal CAPEX (Investimento)</span>
+                    <span id="capex-total-geral" class="text-3xl font-black">R$ 0,00</span>
                 </div>
             </div>
-        </div>
+        </section>
 
         <!-- BLOCO 4 -->
-        <div class="mb-8 border-t border-gray-200 pt-8 bg-gray-50 p-6 rounded-xl">
-            <h3 class="text-xl font-bold text-gray-800 border-l-4 border-cyan-600 pl-3 mb-6">Bloco 4: Consolidação Final</h3>
+        <section class="card-base bg-slate-900 text-white border-none shadow-2xl relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-cyan-500 opacity-5 rounded-full blur-3xl -mr-32 -mt-32"></div>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-                <div class="bg-white p-4 rounded-lg shadow-sm">
-                    <label class="text-xs text-gray-500 block mb-2 uppercase tracking-widest">Condição de Pagamento</label>
-                    <select id="bl4-condicao-pagamento" class="select-input">
-                        <option value="mensal">Mensal (+3%)</option>
-                        <option value="anual" selected>Anual (Base)</option>
-                        <option value="semestral">Semestral (-2%)</option>
-                        <option value="avista">À Vista (-5%)</option>
+            <h3 class="text-xl font-bold mb-8 flex items-center gap-3 relative z-10">
+                <div class="bg-cyan-400 w-1.5 h-6 rounded-full"></div>
+                Bloco 4: Consolidação Financeira
+            </h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 relative z-10">
+                <div class="bg-white/5 backdrop-blur-sm p-6 rounded-2xl border border-white/10 shadow-lg">
+                    <label class="text-xs font-bold text-slate-400 block mb-3 uppercase tracking-widest">Condição de Pagamento</label>
+                    <select id="bl4-condicao-pagamento" class="w-full p-3 bg-slate-800 border border-slate-700 rounded-xl font-bold text-white outline-none focus:ring-2 focus:ring-cyan-500 transition-colors">
+                        <option value="mensal">Mensal (+3% Acréscimo)</option>
+                        <option value="anual" selected>Anual (Valor Base)</option>
+                        <option value="semestral">Semestral (-2% Desconto)</option>
+                        <option value="avista">À Vista (-5% Desconto)</option>
                     </select>
                 </div>
-                <div class="flex flex-col justify-center items-end space-y-1">
-                    <div class="text-sm text-gray-600">Investimento em Pessoal/Refeição: <span id="total-opex-consolidado" class="font-bold">R$ 0,00</span></div>
-                    <div class="text-sm text-gray-600">Investimento em Materiais: <span id="total-capex-consolidado" class="font-bold">R$ 0,00</span></div>
-                    <div id="bl4-ajuste-pagamento-display" class="text-xs font-bold text-gray-400">Ajuste Financeiro: R$ 0,00</div>
+                <div class="flex flex-col justify-center items-end space-y-3 px-2">
+                    <div class="text-sm text-slate-400 flex justify-between w-full max-w-xs"><span>Total OPEX:</span> <span id="total-opex-consolidado" class="font-bold text-white">R$ 0,00</span></div>
+                    <div class="text-sm text-slate-400 flex justify-between w-full max-w-xs"><span>Total CAPEX:</span> <span id="total-capex-consolidado" class="font-bold text-white">R$ 0,00</span></div>
+                    <div id="bl4-ajuste-pagamento-display" class="text-xs font-black text-cyan-400 bg-cyan-400/10 px-3 py-1 rounded-full">Ajuste Financeiro: R$ 0,00</div>
                 </div>
             </div>
 
-            <div class="bg-cyan-800 text-white p-8 rounded-xl text-center shadow-xl transform transition-transform hover:scale-[1.01]">
-                <span class="block text-sm opacity-80 uppercase tracking-widest mb-2">Valor Total do Investimento da Parceria</span>
-                <span id="total-geral-proposta" class="block text-4xl md:text-6xl font-extrabold">R$ 0,00</span>
+            <div class="bg-gradient-to-r from-cyan-600 to-blue-600 p-8 md:p-12 rounded-3xl text-center shadow-inner relative z-10">
+                <span class="block text-sm font-bold opacity-90 uppercase tracking-[0.3em] mb-3 text-white">Valor Total do Investimento Anual</span>
+                <span id="total-geral-proposta" class="block text-4xl md:text-7xl font-black tracking-tighter drop-shadow-xl">R$ 0,00</span>
             </div>
-        </div>
+        </section>
 
         <!-- BLOCO 5 (Interno) -->
-        <div class="mb-12 border-t border-red-200 pt-8 bg-red-50 p-6 rounded-xl">
+        <div class="mb-12 border-t border-red-100 pt-8 bg-red-50/30 p-8 rounded-3xl border border-dashed">
             <h3 class="text-lg font-bold text-red-800 mb-4 flex items-center italic">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
                 Simulação de Margem de Lucro (Uso Interno)
             </h3>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
-                <div class="bg-white p-3 rounded border">
-                    <label class="block text-red-700 text-xs mb-1 uppercase font-bold">Custo Hora Prof. (Real)</label>
-                    <input type="number" id="bl5-margem-custo-hora-professor" value="150" class="w-full p-2 border rounded text-center font-bold text-red-700">
+                <div class="bg-white p-4 rounded-xl border border-red-100 shadow-sm">
+                    <label class="block text-red-700 text-xs mb-2 uppercase font-bold tracking-wider">Custo Hora Prof. (Real)</label>
+                    <input type="number" id="bl5-margem-custo-hora-professor" value="150" class="w-full p-2 border rounded-lg text-center font-black text-red-700 bg-red-50/50">
                 </div>
-                <div class="bg-white p-3 rounded border">
-                    <label class="block text-red-700 text-xs mb-1 uppercase font-bold">Margem CAPEX (%)</label>
-                    <input type="number" id="bl5-margem-capex-percent" value="20" class="w-full p-2 border rounded text-center font-bold text-red-700">
+                <div class="bg-white p-4 rounded-xl border border-red-100 shadow-sm">
+                    <label class="block text-red-700 text-xs mb-2 uppercase font-bold tracking-wider">Margem CAPEX (%)</label>
+                    <input type="number" id="bl5-margem-capex-percent" value="20" class="w-full p-2 border rounded-lg text-center font-black text-red-700 bg-red-50/50">
                 </div>
                 <div class="text-center pt-2">
-                    <span class="block text-xs text-red-600 uppercase font-bold">Lucro Bruto Estimado</span>
-                    <span id="bl5-margem-lucro-bruto" class="font-extrabold text-red-900 text-2xl">R$ 0,00</span>
+                    <span class="block text-xs text-red-600 uppercase font-black tracking-widest mb-1">Lucro Bruto Estimado</span>
+                    <span id="bl5-margem-lucro-bruto" class="font-black text-red-900 text-3xl">R$ 0,00</span>
                 </div>
             </div>
-            <div class="regua-valor-lucro h-6 mt-6">
+            <div class="regua-valor-lucro h-6 mt-8">
                 <div id="bl5-margem-regua-custo" class="regua-custo" style="width: 0%;"></div>
                 <div id="bl5-margem-regua-lucro" class="regua-lucro" style="width: 0%;"></div>
             </div>
         </div>
 
         <!-- Botões -->
-        <div class="text-center space-x-4 pb-10 flex justify-center">
-            <button id="btn-gerar-pdf-completo" class="bg-gray-800 hover:bg-gray-900 text-white py-4 px-12 rounded-xl shadow-lg font-medium flex items-center transition-all">
-                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                Gerar PDF Detalhado (Relatório Completo)
+        <div class="text-center space-x-4 pb-20 flex flex-col md:flex-row justify-center items-center gap-4">
+            <button id="btn-gerar-pdf-completo" class="bg-slate-800 hover:bg-slate-900 text-white py-4 px-12 rounded-2xl shadow-xl font-bold flex items-center transition-all transform hover:-translate-y-1">
+                <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                PDF Relatório Detalhado
             </button>
-            <button id="btn-gerar-pdf-resumo" class="bg-white hover:bg-gray-100 text-gray-700 border border-gray-300 py-4 px-12 rounded-xl shadow-lg font-medium flex items-center transition-all">
-                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                Resumo Simples
+            <button id="btn-gerar-pdf-resumo" class="bg-white hover:bg-slate-50 text-slate-700 border-2 border-slate-200 py-4 px-12 rounded-2xl shadow-xl font-bold flex items-center transition-all transform hover:-translate-y-1">
+                <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                PDF Resumo Simples
             </button>
         </div>
 
     </div>
 
 <script>
-    // --- DADOS ---
+    // --- DADOS ESCOLAS ---
     const dadosEscolas = [
         { id: 1, nome: "EM Coronel José Viana Alves", alunos: 315, turmas: 12, anos: "6º e 7º anos" },
         { id: 2, nome: "EM Odília Mendes Brito", alunos: 350, turmas: 10, anos: "6º ao 9º ano" }
     ];
 
+    // --- DADOS CAPEX (ATUALIZADO COM OS VALORES DO EDITAL) ---
     const dadosCapex = [
-        { id: 'c1', produto: "Flauta", qtd: 112, unidade: 'escola', vlrAquisicao: 62.00 },
-        { id: 'c2', produto: "Teclado", qtd: 20, unidade: 'escola', vlrAquisicao: 1200.00 },
-        { id: 'c3', produto: "Violão", qtd: 20, unidade: 'escola', vlrAquisicao: 1100.00 },
-        { id: 'c4', produto: "Uniforme (Balé)", qtd: 70, unidade: 'escola', vlrAquisicao: 160.00 },
-        { id: 'c5', produto: "Jogos de Tabuleiro", qtd: 80, unidade: 'escola', vlrAquisicao: 180.00 },
-        { id: 'c6', produto: "Bola de Voleibol", qtd: 12, unidade: 'escola', vlrAquisicao: 250.00 },
-        { id: 'c7', produto: "Mesa (Tênis)", qtd: 8, unidade: 'escola', vlrAquisicao: 2500.00 },
-        { id: 'c8', produto: "Kimono", qtd: 336, unidade: 'escola', vlrAquisicao: 340.00 },
-        { id: 'c10', produto: "Raquete/tênis/bola/rede", qtd: 8, unidade: 'escola', vlrAquisicao: 250.00 },
-        { id: 'c11', produto: "Tatame", qtd: 1, unidade: 'escola', vlrAquisicao: 10200.00 },
-        { id: 'c12', produto: "Maleta Robótica I", qtd: 8, unidade: 'escola', vlrAquisicao: 2300.00 },
-        { id: 'c13', produto: "Maleta Torneio", qtd: 2, unidade: 'escola', vlrAquisicao: 6200.00 },
-        { id: 'c14', produto: "Maleta Robótica II", qtd: 10, unidade: 'escola', vlrAquisicao: 3900.00 },
-        { id: 'c15', produto: "Carrinho de Notebook", qtd: 2, unidade: 'escola', vlrAquisicao: 8000.00 },
-        { id: 'c16', produto: "Notebook", qtd: 73, unidade: 'escola', vlrAquisicao: 6200.00, locacao50: true },
-        { id: 'c17', produto: "Caixa de Som", qtd: 2, unidade: 'escola', vlrAquisicao: 2000.00 },
-        { id: 'c18', produto: "Kit Artes Circenses", qtd: 1, unidade: 'grupo3', vlrAquisicao: 52800.00 },
-        { id: 'c19', produto: "Kit Robótica", qtd: 1, unidade: 'escola', vlrAquisicao: 39920.00 },
-        { id: 'c20', produto: "Kit Dança Rítmica", qtd: 1, unidade: 'grupo3', vlrAquisicao: 62400.00 }
+        { id: 'c1', produto: "Desenv. de Apps (Laboratório)", qtd: 1, unidade: 'grupo3', vlrAquisicao: 90000.00, vlrLocacao: 13500.00 },
+        { id: 'c2', produto: "Robótica Educacional", qtd: 1, unidade: 'escola', vlrAquisicao: 159680.00, vlrLocacao: 11976.00 },
+        { id: 'c3', produto: "Produção Audiovisual", qtd: 1, unidade: 'grupo3', vlrAquisicao: 70000.00, vlrLocacao: 10500.00 },
+        { id: 'c4', produto: "Tênis de Mesa", qtd: 8, unidade: 'escola', vlrAquisicao: 80000.00, vlrLocacao: 750.00 },
+        { id: 'c5', produto: "Jogos de Tabuleiro", qtd: 80, unidade: 'escola', vlrAquisicao: 57600.00, vlrLocacao: 54.00 },
+        { id: 'c6', produto: "Artes Circenses", qtd: 1, unidade: 'grupo3', vlrAquisicao: 105600.00, vlrLocacao: 15840.00 },
+        { id: 'c7', produto: "Criação de Artes Digitais", qtd: 1, unidade: 'grupo3', vlrAquisicao: 70000.00, vlrLocacao: 10500.00 },
+        { id: 'n1', produto: "Kit Automação Residencial", qtd: 1, unidade: 'turma', vlrAquisicao: 436160.00, vlrLocacao: 4512.00 },
+        { id: 'n2', produto: "Material Didático", qtd: 1, unidade: 'turma', vlrAquisicao: 3300.00, isDespesa: true }, // Custo de 95k/29t = 3300
+        { id: 'n3', produto: "Custo Fixo Manutenção e Conservação", qtd: 1, unidade: 'aluno', vlrAquisicao: 165.00, isDespesa: true }, // Custo de 164k/998a = 165
+        { id: 'n4', produto: "Custo Fixo Manutenção e Conservação (Extra)", qtd: 1, unidade: 'global', vlrAquisicao: 3100000.00, isDespesa: true } 
     ];
 
-    const listaEl = document.getElementById('lista-escolas');
-    const acrescimoEl = document.getElementById('acrescimo-percent');
-    const capexTableEl = document.getElementById('capex-tabela-itens');
     const fmtBRL = (v) => v.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'});
 
     function renderEscolas() {
-        listaEl.innerHTML = '';
+        const container = document.getElementById('lista-escolas');
+        container.innerHTML = '';
         dadosEscolas.forEach(e => {
             const div = document.createElement('div');
-            div.className = 'flex items-center p-3 border-b bg-white rounded shadow-sm mb-2';
+            div.className = 'flex items-center p-3 border-b bg-white rounded-xl shadow-sm mb-2';
             div.innerHTML = `
-                <input type="checkbox" class="escola-checkbox mr-3 h-5 w-5 text-cyan-600" checked data-alunos="${e.alunos}" data-turmas="${e.turmas}">
+                <input type="checkbox" class="escola-checkbox mr-3 h-5 w-5 text-cyan-600 border-slate-300" checked data-alunos="${e.alunos}" data-turmas="${e.turmas}" data-id="${e.id}">
                 <div class="text-sm">
-                    <div class="font-bold text-gray-800">${e.nome}</div>
-                    <div class="text-xs text-gray-500">${e.alunos} Alunos | ${e.turmas} Turmas | ${e.anos}</div>
+                    <div class="font-black text-slate-700">${e.nome}</div>
+                    <div class="text-[11px] text-slate-400 font-bold uppercase tracking-tight">${e.alunos} Alunos • ${e.turmas} Turmas • ${e.anos}</div>
                 </div>
             `;
-            listaEl.appendChild(div);
+            container.appendChild(div);
         });
     }
 
     function renderCapex() {
-        capexTableEl.innerHTML = '';
+        const container = document.getElementById('capex-tabela-itens');
+        container.innerHTML = '';
         dadosCapex.forEach(item => {
-            const labelLoc = item.locacao50 ? 'Locação (50%)' : 'Locação (30%)';
-            const perc = item.locacao50 ? 0.5 : 0.3;
-            
             const tr = document.createElement('tr');
-            tr.className = 'capex-row divide-x divide-gray-50';
+            tr.className = 'capex-row transition-colors hover:bg-slate-50';
             tr.dataset.id = item.id;
+
+            let unidadeDisplay = '';
+            if (item.unidade === 'escola') unidadeDisplay = 'p/ Escola';
+            else if (item.unidade === 'grupo3') unidadeDisplay = '1/3 Escolas';
+            else if (item.unidade === 'turma') unidadeDisplay = 'p/ Turma';
+            else if (item.unidade === 'aluno') unidadeDisplay = 'p/ Aluno';
+            else if (item.unidade === 'global') unidadeDisplay = 'Global';
+
+            let custoHtml = '';
+            if (item.isDespesa) {
+                custoHtml = `
+                    <div class="flex items-center text-xs">
+                        <input type="radio" name="c_${item.id}" value="aquisicao" class="mr-2" checked>
+                        <span class="mr-1 font-bold text-slate-700 italic">Custo:</span>
+                        <input type="number" class="capex-vlr-base w-24 border rounded px-1 text-right text-slate-700" value="${item.vlrAquisicao}">
+                    </div>`;
+            } else {
+                custoHtml = `
+                    <div class="flex items-center text-xs mb-1.5">
+                        <input type="radio" name="c_${item.id}" value="aquisicao" class="mr-2" checked>
+                        <span class="w-20 font-bold text-slate-700">Aquisição:</span>
+                        <input type="number" class="capex-vlr-base w-24 border rounded px-1 text-right" value="${item.vlrAquisicao}">
+                    </div>
+                    <div class="flex items-center text-xs text-slate-500">
+                        <input type="radio" name="c_${item.id}" value="locacao" class="mr-2">
+                        <span class="w-20">Locação:</span>
+                        <span class="capex-display-locacao font-bold text-slate-700">${fmtBRL(item.vlrLocacao)}</span>
+                    </div>`;
+            }
+
             tr.innerHTML = `
-                <td class="py-3 px-4"><input type="checkbox" class="capex-check h-4 w-4 text-cyan-600" checked></td>
-                <td class="py-3 px-4 font-medium text-gray-800 text-xs">${item.produto}</td>
-                <td class="py-3 px-4 text-center">
-                    <input type="number" class="capex-qtd w-14 border rounded text-center text-xs" value="${item.qtd}">
+                <td class="py-4 px-6"><input type="checkbox" class="capex-check h-4 w-4 text-cyan-600 rounded" checked></td>
+                <td class="py-4 px-4 font-bold text-slate-700 text-xs">${item.produto}</td>
+                <td class="py-4 px-4 text-center">
+                    <input type="number" class="capex-qtd w-12 border rounded text-center py-1 text-xs font-black text-slate-700" value="${item.qtd}">
                 </td>
-                <td class="py-3 px-4 space-y-1">
-                    <div class="flex items-center text-[10px]">
-                        <input type="radio" name="r_${item.id}" value="aquisicao" class="mr-1" checked>
-                        <span>Aq.: <input type="number" class="capex-vlr-base w-20 border rounded px-1" value="${item.vlrAquisicao}"></span>
-                    </div>
-                    <div class="flex items-center text-[10px] text-gray-500">
-                        <input type="radio" name="r_${item.id}" value="locacao" class="mr-1">
-                        <span>${labelLoc}: <span class="capex-display-locacao font-bold">${fmtBRL(item.vlrAquisicao * perc)}</span></span>
-                    </div>
-                </td>
-                <td class="py-3 px-4 text-right font-bold text-xs capex-total-item text-gray-900">R$ 0,00</td>
+                <td class="py-4 px-4 text-[9px] text-slate-400 font-black uppercase tracking-widest">${unidadeDisplay}</td>
+                <td class="py-4 px-4 space-y-1">${custoHtml}</td>
+                <td class="py-4 px-6 text-right font-black text-slate-800 capex-total-item text-sm">R$ 0,00</td>
             `;
-            capexTableEl.appendChild(tr);
+            container.appendChild(tr);
         });
     }
 
     function calcular() {
         const checks = document.querySelectorAll('.escola-checkbox:checked');
-        let escolas = 0, turmas = 0, alunos = 0;
-        checks.forEach(c => { escolas++; turmas += parseInt(c.dataset.turmas); alunos += parseInt(c.dataset.alunos); });
-        const acrescimo = parseFloat(acrescimoEl.value) || 0;
-        const totalAlFinal = Math.round(alunos * (1 + acrescimo/100));
+        let escolas = 0, turmasBase = 0, alunosBase = 0;
+        checks.forEach(c => { escolas++; turmasBase += parseInt(c.dataset.turmas); alunosBase += parseInt(c.dataset.alunos); });
+        
+        const acrescimo = parseFloat(document.getElementById('acrescimo-percent').value) || 0;
+        const totalAlFinal = Math.round(alunosBase * (1 + acrescimo/100));
 
         document.getElementById('total-escolas').innerText = escolas;
-        document.getElementById('total-turmas').innerText = turmas;
-        document.getElementById('bl2-turmas-calc').innerText = `${turmas} Turmas`;
-        document.getElementById('total-alunos-base').innerText = alunos;
+        document.getElementById('total-turmas').innerText = turmasBase;
+        document.getElementById('bl2-turmas-calc').innerText = `${turmasBase} Turmas`;
+        document.getElementById('total-alunos-base').innerText = alunosBase;
         document.getElementById('total-alunos-final').innerText = totalAlFinal;
 
         const periodo = 9;
-        const diasLetivos = 180; // 5 dias x 4 semanas x 9 meses aprox
+        const diasLetivos = 180;
         const modeloH = parseFloat(document.getElementById('opex-modelo-atendimento').value);
         const bolsaM = parseFloat(document.getElementById('opex-bolsa-monitor').value);
         const horaP = parseFloat(document.getElementById('opex-valor-hora-professor').value);
@@ -353,8 +394,8 @@
         const salA2 = parseFloat(document.getElementById('opex-custo-analista2').value);
         const salA3 = parseFloat(document.getElementById('opex-custo-analista3').value);
 
-        const cMon = turmas * bolsaM * periodo;
-        const cProf = turmas * modeloH * horaP;
+        const cMon = turmasBase * bolsaM * periodo;
+        const cProf = turmasBase * modeloH * horaP;
         const cRef = totalAlFinal * valorRef * diasLetivos;
         const cEq = ((1 * salA) + (1 * salA2) + (2 * salA3)) * periodo; 
         const totalOpex = cMon + cProf + cRef + cEq;
@@ -366,27 +407,38 @@
         document.getElementById('opex-total-anual').innerText = fmtBRL(totalOpex);
         document.getElementById('total-opex-consolidado').innerText = fmtBRL(totalOpex);
 
+        // CAPEX LOGIC (INTEGRATED EDITAL DATA)
         let tCapex = 0;
         document.querySelectorAll('.capex-row').forEach(row => {
             const itemData = dadosCapex.find(d => d.id === row.dataset.id);
             const isChecked = row.querySelector('.capex-check').checked;
             const qtd = parseFloat(row.querySelector('.capex-qtd').value) || 0;
             const vlrB = parseFloat(row.querySelector('.capex-vlr-base').value) || 0;
-            const radioEl = row.querySelector('input[type=radio]:checked');
-            const opt = radioEl ? radioEl.value : 'aquisicao';
-            const perc = itemData.locacao50 ? 0.5 : 0.3;
+            const opt = row.querySelector('input[type=radio]:checked').value;
+            const dispLoc = row.querySelector('.capex-display-locacao');
 
-            row.querySelector('.capex-display-locacao').innerText = fmtBRL(vlrB * perc);
-            const vlrU = opt === 'aquisicao' ? vlrB : (vlrB * perc);
+            // Se for aquisição, usa o input. Se for locação, usa o valor do objeto itemData se existir, ou 30% do input.
+            let vlrFinal = vlrB;
+            if (opt === 'locacao') {
+                vlrFinal = itemData.vlrLocacao ? itemData.vlrLocacao : (vlrB * 0.3);
+            }
+            if(dispLoc && !itemData.isDespesa) dispLoc.innerText = fmtBRL(itemData.vlrLocacao ? itemData.vlrLocacao : (vlrB * 0.3));
             
-            let mult = itemData.unidade === 'grupo3' ? Math.ceil(escolas / 3) : escolas;
-            const totalI = qtd * vlrU * mult;
+            let mult = 1;
+            if (itemData.unidade === 'escola') mult = escolas;
+            else if (itemData.unidade === 'grupo3') mult = Math.ceil(escolas / 3);
+            else if (itemData.unidade === 'turma') mult = turmasBase;
+            else if (itemData.unidade === 'aluno') mult = totalAlFinal;
+            else if (itemData.unidade === 'global') mult = 1;
+
+            const totalI = qtd * vlrFinal * mult;
             row.querySelector('.capex-total-item').innerText = fmtBRL(totalI);
             if(isChecked) tCapex += totalI;
         });
         document.getElementById('capex-total-geral').innerText = fmtBRL(tCapex);
         document.getElementById('total-capex-consolidado').innerText = fmtBRL(tCapex);
 
+        // Consolidação
         const cond = document.getElementById('bl4-condicao-pagamento').value;
         let adj = 0;
         if(cond === 'mensal') adj = 0.03;
@@ -400,10 +452,10 @@
         document.getElementById('bl4-ajuste-pagamento-display').innerText = `Ajuste Financeiro: ${vAdj >= 0 ? '+' : ''}${fmtBRL(vAdj)}`;
         document.getElementById('total-geral-proposta').innerText = fmtBRL(totalG);
 
-        // Bloco 5 Margem
+        // Margem Interna
         const hReal = parseFloat(document.getElementById('bl5-margem-custo-hora-professor').value) || 0;
         const mCapex = parseFloat(document.getElementById('bl5-margem-capex-percent').value) || 0;
-        const opexReal = (turmas * modeloH * hReal) + cMon + cRef + cEq;
+        const opexReal = (turmasBase * modeloH * hReal) + cMon + cRef + cEq;
         const capexReal = tCapex / (1 + mCapex/100);
         const custoTotalReal = opexReal + capexReal;
         const lucro = totalG - custoTotalReal;
@@ -416,29 +468,23 @@
         document.getElementById('bl5-margem-regua-lucro').style.width = `${Math.min(100, Math.max(0, pLucro))}%`;
     }
 
+    // PDF 
     function addPdfHeaderWithLogo(doc, pageNum, pageCount) {
         const logoImg = document.getElementById('logo-pdf');
         const today = new Date().toLocaleDateString('pt-BR');
-        doc.setFontSize(10);
-        doc.setFont('helvetica', 'bold');
-        doc.setTextColor(80, 80, 80);
+        doc.setFontSize(10); doc.setFont('helvetica', 'bold'); doc.setTextColor(80, 80, 80);
         doc.text("Proposta de Parceria SESI", 15, 18);
-        doc.setFontSize(9);
-        doc.setTextColor(0, 107, 137);
+        doc.setFontSize(9); doc.setTextColor(0, 107, 137);
         doc.text("Relatório Detalhado: Modelo Especial 2 Unidades (300h)", 15, 23);
         if (logoImg) {
             try {
                 const logoHeight = 16;
                 const logoWidth = (logoImg.width / logoImg.height) * logoHeight;
-                const logoX = doc.internal.pageSize.getWidth() - 15 - logoWidth;
-                doc.addImage(logoImg, 'PNG', logoX, 10, logoWidth, logoHeight);
-            } catch (e) { console.error(e); }
+                doc.addImage(logoImg, 'PNG', 195 - logoWidth, 10, logoWidth, logoHeight);
+            } catch (e) {}
         }
-        doc.setLineWidth(0.5);
-        doc.setDrawColor(200, 200, 200);
-        doc.line(15, 30, 195, 30);
-        doc.setFontSize(8);
-        doc.setTextColor(150, 150, 150);
+        doc.setLineWidth(0.5); doc.setDrawColor(200); doc.line(15, 30, 195, 30);
+        doc.setFontSize(8); doc.setTextColor(150);
         doc.text(`Gerado em: ${today} | Página ${pageNum} de ${pageCount}`, 105, 288, {align:'center'});
     }
 
@@ -446,130 +492,97 @@
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
         
-        doc.setFontSize(14);
-        doc.setTextColor(0, 100, 150);
+        doc.setFontSize(14); doc.setTextColor(0, 100, 150);
         doc.text("1. Dimensionamento do Escopo e Docência", 15, 45);
 
         const bodyPublico = [
             ['Unidades Atendidas', document.getElementById('total-escolas').innerText],
             ['Total de Turmas', document.getElementById('total-turmas').innerText],
             ['Público-Alvo Estimado', document.getElementById('total-alunos-final').innerText],
-            ['Carga Horária Total / Turma', document.getElementById('opex-modelo-atendimento').options[document.getElementById('opex-modelo-atendimento').selectedIndex].text]
+            ['Modelo de Carga Horária', document.getElementById('opex-modelo-atendimento').options[document.getElementById('opex-modelo-atendimento').selectedIndex].text]
         ];
 
-        doc.autoTable({
-            startY: 50,
-            head: [['Descrição do Escopo', 'Indicador']],
-            body: bodyPublico,
-            theme: 'grid',
-            headStyles: { fillColor: [0, 107, 137] }
-        });
+        doc.autoTable({ startY: 50, head: [['Escopo', 'Indicador']], body: bodyPublico, theme: 'grid', headStyles: { fillColor: [0, 107, 137] } });
 
         const bodyOpex = [
-            ['Custos com Monitores (1 por Turma)', document.getElementById('opex-custo-monitores').innerText],
-            ['Custos com Professores (Docência)', document.getElementById('opex-custo-professores').innerText],
-            ['Custos com Refeição (Alunos/Dia)', document.getElementById('opex-custo-refeicoes').innerText],
-            ['Custos com Equipe Técnica e Apoio', document.getElementById('opex-custo-equipe').innerText],
-            [{ content: 'INVESTIMENTO OPERACIONAL (OPEX)', styles: { fontStyle: 'bold' } }, 
-             { content: document.getElementById('total-opex-consolidado').innerText, styles: { fontStyle: 'bold' } }]
+            ['Custos com Monitores (9 Meses)', document.getElementById('opex-custo-monitores').innerText],
+            ['Docência (Professores)', document.getElementById('opex-custo-professores').innerText],
+            ['Refeição (Alunos/Dia)', document.getElementById('opex-custo-refeicoes').innerText],
+            ['Equipe Técnica e Apoio', document.getElementById('opex-custo-equipe').innerText],
+            [{ content: 'INVESTIMENTO OPERACIONAL (OPEX)', styles: { fontStyle: 'bold' } }, { content: document.getElementById('total-opex-consolidado').innerText, styles: { fontStyle: 'bold' } }]
         ];
 
-        doc.autoTable({
-            startY: doc.lastAutoTable.finalY + 10,
-            head: [['Composição de Custos OPEX', 'Valor']],
-            body: bodyOpex,
-            theme: 'grid',
-            headStyles: { fillColor: [40, 40, 40] }
-        });
+        doc.autoTable({ startY: doc.lastAutoTable.finalY + 10, head: [['Composição OPEX', 'Valor']], body: bodyOpex, theme: 'grid', headStyles: { fillColor: [40] } });
 
         if(!resumo) {
             doc.addPage();
-            doc.setFontSize(14);
-            doc.setTextColor(0, 100, 150);
+            doc.setFontSize(14); doc.setTextColor(0, 100, 150);
             doc.text("2. Detalhamento de Equipamentos e Materiais (CAPEX)", 15, 45);
 
             const capexData = [];
             document.querySelectorAll('.capex-row').forEach(row => {
                 if(row.querySelector('.capex-check').checked) {
-                    const itemData = dadosCapex.find(d => d.id === row.dataset.id);
+                    const id = row.dataset.id;
+                    const itemData = dadosCapex.find(d => d.id === id);
                     const radio = row.querySelector('input[type=radio]:checked').value;
                     const vlrBase = parseFloat(row.querySelector('.capex-vlr-base').value) || 0;
-                    const perc = itemData.locacao50 ? 0.5 : 0.3;
-                    const vlrU = radio === 'aquisicao' ? vlrBase : (vlrBase * perc);
+                    
+                    let vlrU = vlrBase;
+                    let tipoCusto = 'Custo Direto';
+                    if (radio === 'locacao') {
+                        vlrU = itemData.vlrLocacao ? itemData.vlrLocacao : (vlrBase * 0.3);
+                        tipoCusto = 'Locação';
+                    }
 
                     capexData.push([
                         row.querySelector('td:nth-child(2)').innerText,
                         row.querySelector('.capex-qtd').value,
-                        radio === 'aquisicao' ? 'Aquisição' : (itemData.locacao50 ? 'Loc. 50%' : 'Loc. 30%'),
+                        row.querySelector('td:nth-child(4)').innerText,
+                        tipoCusto,
                         fmtBRL(vlrU),
                         row.querySelector('.capex-total-item').innerText
                     ]);
                 }
             });
 
-            doc.autoTable({
-                startY: 50,
-                head: [['Produto', 'Qtd Unid.', 'Opção', 'Vlr. Unitário', 'Investimento Total']],
-                body: capexData,
-                theme: 'striped',
-                styles: { fontSize: 8 },
-                headStyles: { fillColor: [80, 80, 80] }
-            });
+            doc.autoTable({ startY: 50, head: [['Produto', 'Qtd', 'Unidade', 'Tipo', 'Vlr. Unit.', 'Total']], body: capexData, theme: 'striped', styles: { fontSize: 8 }, headStyles: { fillColor: [80] } });
 
             doc.addPage();
-            doc.setFontSize(14);
-            doc.setTextColor(0, 100, 150);
-            doc.text("3. Consolidação Financeira Final", 15, 45);
+            doc.setFontSize(14); doc.setTextColor(0, 100, 150);
+            doc.text("3. Consolidação Final", 15, 45);
 
-            const condTxt = document.getElementById('bl4-condicao-pagamento').options[document.getElementById('bl4-condicao-pagamento').selectedIndex].text;
-            
             doc.autoTable({
-                startY: 50,
-                theme: 'grid',
-                head: [['Consolidação de Investimento', 'Valor']],
+                startY: 50, theme: 'grid', head: [['Investimento', 'Valor']],
                 body: [
-                    ['Total OPEX (Pessoal e Refeição)', document.getElementById('total-opex-consolidado').innerText],
-                    ['Total CAPEX (Aquisição/Materiais)', document.getElementById('total-capex-consolidado').innerText],
-                    ['Ajuste de Condição de Pagamento', document.getElementById('bl4-ajuste-pagamento-display').innerText.replace('Ajuste Financeiro: ', '')],
-                    [{ content: 'VALOR TOTAL DA PARCERIA', styles: { fontStyle: 'bold', fontSize: 12, fillColor: [240, 240, 240] } }, 
-                     { content: document.getElementById('total-geral-proposta').innerText, styles: { fontStyle: 'bold', fontSize: 12, fillColor: [240, 240, 240] } }]
+                    ['Total OPEX (Pessoal/Alimentação)', document.getElementById('total-opex-consolidado').innerText],
+                    ['Total CAPEX (Materiais/Infra)', document.getElementById('total-capex-consolidado').innerText],
+                    ['Ajuste Condição Pagamento', document.getElementById('bl4-ajuste-pagamento-display').innerText.replace('Ajuste Financeiro: ', '')],
+                    [{ content: 'VALOR TOTAL DA PARCERIA', styles: { fontStyle: 'bold', fontSize: 12, fillColor: [240] } }, { content: document.getElementById('total-geral-proposta').innerText, styles: { fontStyle: 'bold', fontSize: 12, fillColor: [240] } }]
                 ],
                 headStyles: { fillColor: [0, 107, 137] }
             });
-
-            doc.setFontSize(10);
-            doc.setTextColor(100);
-            doc.text(`Condição de Pagamento selecionada: ${condTxt}`, 15, doc.lastAutoTable.finalY + 10);
         }
 
         const pageCount = doc.internal.getNumberOfPages();
-        for(let i=1; i<=pageCount; i++) {
-            doc.setPage(i);
-            addPdfHeaderWithLogo(doc, i, pageCount);
-        }
-
+        for(let i=1; i<=pageCount; i++) { doc.setPage(i); addPdfHeaderWithLogo(doc, i, pageCount); }
         doc.save(`Proposta_SESI_Relatorio_Detalhado_300h.pdf`);
     }
 
-    // Listeners
-    acrescimoEl.addEventListener('input', calcular);
-    document.getElementById('opex-modelo-atendimento').addEventListener('change', calcular);
-    ['opex-bolsa-monitor', 'opex-valor-hora-professor', 'opex-valor-refeicao', 'opex-custo-assistente', 'opex-custo-analista2', 'opex-custo-analista3']
-    .forEach(id => document.getElementById(id).addEventListener('input', calcular));
-    
-    capexTableEl.addEventListener('input', calcular);
-    capexTableEl.addEventListener('change', calcular);
-    document.getElementById('bl4-condicao-pagamento').addEventListener('change', calcular);
-    document.getElementById('bl5-margem-custo-hora-professor').addEventListener('input', calcular);
-    document.getElementById('bl5-margem-capex-percent').addEventListener('input', calcular);
-
-    document.getElementById('btn-gerar-pdf-completo').onclick = () => gerarPDF(false);
-    document.getElementById('btn-gerar-pdf-resumo').onclick = () => gerarPDF(true);
-
-    // Init
-    renderEscolas();
-    renderCapex();
-    calcular();
+    // --- EVENTOS ---
+    window.onload = () => {
+        renderEscolas();
+        renderCapex();
+        calcular();
+        
+        document.addEventListener('input', (e) => {
+            if (e.target.matches('input') || e.target.matches('select')) calcular();
+        });
+        document.addEventListener('change', (e) => {
+            if (e.target.matches('input[type="radio"]') || e.target.matches('input[type="checkbox"]')) calcular();
+        });
+        document.getElementById('btn-gerar-pdf-completo').onclick = () => gerarPDF(false);
+        document.getElementById('btn-gerar-pdf-resumo').onclick = () => gerarPDF(true);
+    };
 </script>
 </body>
 </html>
