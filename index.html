@@ -95,7 +95,7 @@
                 </div>
                 <div class="bg-white p-5 rounded-lg border border-gray-200 shadow-sm text-center">
                     <span class="text-xs text-gray-500 block uppercase">Período Letivo</span>
-                    <span class="text-2xl font-bold text-cyan-700">9 Meses</span>
+                    <span class="text-2xl font-bold text-cyan-700">9 Meses (180 dias)</span>
                 </div>
                 <div class="bg-white p-5 rounded-lg border border-gray-200 shadow-sm text-center">
                     <span class="text-xs text-gray-500 block uppercase">Base de Cálculo</span>
@@ -104,46 +104,54 @@
             </div>
 
             <!-- Custos Unitários -->
-            <div class="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6 text-center">
-                <div class="bg-gray-50 p-3 rounded border border-gray-200">
-                    <label class="text-[10px] text-gray-500 block uppercase">Bolsa Monitor</label>
-                    <input type="number" id="opex-bolsa-monitor" value="1500" class="w-full bg-transparent text-center font-bold outline-none">
+            <div class="grid grid-cols-2 md:grid-cols-6 gap-2 mb-6 text-center">
+                <div class="bg-gray-50 p-2 rounded border border-gray-200">
+                    <label class="text-[9px] text-gray-500 block uppercase">Bolsa Monitor</label>
+                    <input type="number" id="opex-bolsa-monitor" value="1500" class="w-full bg-transparent text-center font-bold outline-none text-sm">
                 </div>
-                <div class="bg-gray-50 p-3 rounded border border-gray-200">
-                    <label class="text-[10px] text-gray-500 block uppercase">Hora Professor</label>
-                    <input type="number" id="opex-valor-hora-professor" value="220" class="w-full bg-transparent text-center font-bold outline-none">
+                <div class="bg-gray-50 p-2 rounded border border-gray-200">
+                    <label class="text-[9px] text-gray-500 block uppercase">Hora Professor</label>
+                    <input type="number" id="opex-valor-hora-professor" value="220" class="w-full bg-transparent text-center font-bold outline-none text-sm">
                 </div>
-                <div class="bg-gray-50 p-3 rounded border border-gray-200">
-                    <label class="text-[10px] text-gray-500 block uppercase">Sál. Assistente</label>
-                    <input type="number" id="opex-custo-assistente" value="5000" class="w-full bg-transparent text-center font-bold outline-none">
+                <div class="bg-gray-50 p-2 rounded border border-gray-200">
+                    <label class="text-[9px] text-gray-500 block uppercase">Refeição/Dia</label>
+                    <input type="number" id="opex-valor-refeicao" value="8.00" step="0.50" class="w-full bg-transparent text-center font-bold text-cyan-700 outline-none text-sm">
                 </div>
-                <div class="bg-gray-50 p-3 rounded border border-gray-200">
-                    <label class="text-[10px] text-gray-500 block uppercase">Sál. Analista II</label>
-                    <input type="number" id="opex-custo-analista2" value="7000" class="w-full bg-transparent text-center font-bold outline-none">
+                <div class="bg-gray-50 p-2 rounded border border-gray-200">
+                    <label class="text-[9px] text-gray-500 block uppercase">Sál. Assistente</label>
+                    <input type="number" id="opex-custo-assistente" value="5000" class="w-full bg-transparent text-center font-bold outline-none text-sm">
                 </div>
-                <div class="bg-gray-50 p-3 rounded border border-gray-200">
-                    <label class="text-[10px] text-gray-500 block uppercase">Sál. Analista III</label>
-                    <input type="number" id="opex-custo-analista3" value="9600" class="w-full bg-transparent text-center font-bold outline-none">
+                <div class="bg-gray-50 p-2 rounded border border-gray-200">
+                    <label class="text-[9px] text-gray-500 block uppercase">Sál. Analista II</label>
+                    <input type="number" id="opex-custo-analista2" value="7000" class="w-full bg-transparent text-center font-bold outline-none text-sm">
+                </div>
+                <div class="bg-gray-50 p-2 rounded border border-gray-200">
+                    <label class="text-[9px] text-gray-500 block uppercase">Sál. Analista III</label>
+                    <input type="number" id="opex-custo-analista3" value="9600" class="w-full bg-transparent text-center font-bold outline-none text-sm">
                 </div>
             </div>
 
             <!-- Totais OPEX -->
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div class="bg-white p-4 rounded-lg border border-gray-200 text-center shadow-sm">
-                    <span class="text-xs text-gray-400 block uppercase">Monitores</span>
-                    <span id="opex-custo-monitores" class="font-bold text-gray-700 block mt-1">R$ 0,00</span>
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-3">
+                <div class="bg-white p-3 rounded-lg border border-gray-200 text-center shadow-sm">
+                    <span class="text-[10px] text-gray-400 block uppercase">Monitores</span>
+                    <span id="opex-custo-monitores" class="font-bold text-gray-700 text-sm block">R$ 0,00</span>
                 </div>
-                <div class="bg-white p-4 rounded-lg border border-gray-200 text-center shadow-sm">
-                    <span class="text-xs text-gray-400 block uppercase">Professores</span>
-                    <span id="opex-custo-professores" class="font-bold text-gray-700 block mt-1">R$ 0,00</span>
+                <div class="bg-white p-3 rounded-lg border border-gray-200 text-center shadow-sm">
+                    <span class="text-[10px] text-gray-400 block uppercase">Docência</span>
+                    <span id="opex-custo-professores" class="font-bold text-gray-700 text-sm block">R$ 0,00</span>
                 </div>
-                <div class="bg-white p-4 rounded-lg border border-gray-200 text-center shadow-sm">
-                    <span class="text-xs text-gray-400 block uppercase">Equipe Técnica</span>
-                    <span id="opex-custo-equipe" class="font-bold text-gray-700 block mt-1">R$ 0,00</span>
+                <div class="bg-white p-3 rounded-lg border border-gray-200 text-center shadow-sm border-l-4 border-l-cyan-500">
+                    <span class="text-[10px] text-cyan-600 block uppercase font-bold">Refeições</span>
+                    <span id="opex-custo-refeicoes" class="font-bold text-gray-700 text-sm block">R$ 0,00</span>
                 </div>
-                <div class="bg-cyan-600 text-white p-4 rounded-lg text-center flex flex-col justify-center shadow-lg">
-                    <span class="text-xs opacity-75 block uppercase">Total OPEX (9 Meses)</span>
-                    <span id="opex-total-anual" class="text-2xl font-extrabold mt-1">R$ 0,00</span>
+                <div class="bg-white p-3 rounded-lg border border-gray-200 text-center shadow-sm">
+                    <span class="text-[10px] text-gray-400 block uppercase">Equipe Técnica</span>
+                    <span id="opex-custo-equipe" class="font-bold text-gray-700 text-sm block">R$ 0,00</span>
+                </div>
+                <div class="bg-cyan-600 text-white p-3 rounded-lg text-center flex flex-col justify-center shadow-lg">
+                    <span class="text-[10px] opacity-75 block uppercase font-bold">Total OPEX (9 Meses)</span>
+                    <span id="opex-total-anual" class="text-lg font-extrabold">R$ 0,00</span>
                 </div>
             </div>
         </div>
@@ -169,7 +177,7 @@
             </div>
             <div class="mt-4 text-right">
                  <div class="inline-block bg-cyan-600 text-white p-4 rounded-lg shadow-lg">
-                    <span class="text-xs opacity-75 block uppercase">Total CAPEX</span>
+                    <span class="text-xs opacity-75 block uppercase tracking-wider">Total CAPEX</span>
                     <span id="capex-total-geral" class="text-2xl font-extrabold">R$ 0,00</span>
                 </div>
             </div>
@@ -181,7 +189,7 @@
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
                 <div class="bg-white p-4 rounded-lg shadow-sm">
-                    <label class="text-xs text-gray-500 block mb-2 uppercase">Condição de Pagamento</label>
+                    <label class="text-xs text-gray-500 block mb-2 uppercase tracking-widest">Condição de Pagamento</label>
                     <select id="bl4-condicao-pagamento" class="select-input">
                         <option value="mensal">Mensal (+3%)</option>
                         <option value="anual" selected>Anual (Base)</option>
@@ -190,34 +198,34 @@
                     </select>
                 </div>
                 <div class="flex flex-col justify-center items-end space-y-1">
-                    <div class="text-sm text-gray-600">OPEX: <span id="total-opex-consolidado" class="font-bold">R$ 0,00</span></div>
-                    <div class="text-sm text-gray-600">CAPEX: <span id="total-capex-consolidado" class="font-bold">R$ 0,00</span></div>
-                    <div id="bl4-ajuste-pagamento-display" class="text-xs font-bold text-gray-400">Ajuste: R$ 0,00</div>
+                    <div class="text-sm text-gray-600">Investimento em Pessoal/Refeição: <span id="total-opex-consolidado" class="font-bold">R$ 0,00</span></div>
+                    <div class="text-sm text-gray-600">Investimento em Materiais: <span id="total-capex-consolidado" class="font-bold">R$ 0,00</span></div>
+                    <div id="bl4-ajuste-pagamento-display" class="text-xs font-bold text-gray-400">Ajuste Financeiro: R$ 0,00</div>
                 </div>
             </div>
 
-            <div class="bg-cyan-800 text-white p-8 rounded-xl text-center shadow-xl">
-                <span class="block text-sm opacity-80 uppercase tracking-widest mb-2">Valor do Investimento Total</span>
-                <span id="total-geral-proposta" class="block text-4xl md:text-5xl font-extrabold">R$ 0,00</span>
+            <div class="bg-cyan-800 text-white p-8 rounded-xl text-center shadow-xl transform transition-transform hover:scale-[1.01]">
+                <span class="block text-sm opacity-80 uppercase tracking-widest mb-2">Valor Total do Investimento da Parceria</span>
+                <span id="total-geral-proposta" class="block text-4xl md:text-6xl font-extrabold">R$ 0,00</span>
             </div>
         </div>
 
         <!-- BLOCO 5 (Interno) -->
         <div class="mb-12 border-t border-red-200 pt-8 bg-red-50 p-6 rounded-xl">
             <h3 class="text-lg font-bold text-red-800 mb-4 flex items-center italic">
-                Painel de Margem de Lucro (Uso Interno)
+                Simulação de Margem de Lucro (Uso Interno)
             </h3>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
                 <div class="bg-white p-3 rounded border">
-                    <label class="block text-red-700 text-xs mb-1">Custo Hora Prof. (Real)</label>
-                    <input type="number" id="bl5-margem-custo-hora-professor" value="150" class="w-full p-2 border rounded text-center font-bold">
+                    <label class="block text-red-700 text-xs mb-1 uppercase font-bold">Custo Hora Prof. (Real)</label>
+                    <input type="number" id="bl5-margem-custo-hora-professor" value="150" class="w-full p-2 border rounded text-center font-bold text-red-700">
                 </div>
                 <div class="bg-white p-3 rounded border">
-                    <label class="block text-red-700 text-xs mb-1">Margem CAPEX (%)</label>
-                    <input type="number" id="bl5-margem-capex-percent" value="20" class="w-full p-2 border rounded text-center font-bold">
+                    <label class="block text-red-700 text-xs mb-1 uppercase font-bold">Margem CAPEX (%)</label>
+                    <input type="number" id="bl5-margem-capex-percent" value="20" class="w-full p-2 border rounded text-center font-bold text-red-700">
                 </div>
                 <div class="text-center pt-2">
-                    <span class="block text-xs text-red-600 uppercase">Lucro Bruto Estimado</span>
+                    <span class="block text-xs text-red-600 uppercase font-bold">Lucro Bruto Estimado</span>
                     <span id="bl5-margem-lucro-bruto" class="font-extrabold text-red-900 text-2xl">R$ 0,00</span>
                 </div>
             </div>
@@ -229,11 +237,11 @@
 
         <!-- Botões -->
         <div class="text-center space-x-4 pb-10 flex justify-center">
-            <button id="btn-gerar-pdf-completo" class="bg-gray-800 hover:bg-gray-900 text-white py-3 px-10 rounded-lg shadow-lg font-medium flex items-center transition-all">
+            <button id="btn-gerar-pdf-completo" class="bg-gray-800 hover:bg-gray-900 text-white py-4 px-12 rounded-xl shadow-lg font-medium flex items-center transition-all">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                PDF Completo (Relatório)
+                Gerar PDF Detalhado (Relatório Completo)
             </button>
-            <button id="btn-gerar-pdf-resumo" class="bg-white hover:bg-gray-100 text-gray-700 border border-gray-300 py-3 px-10 rounded-lg shadow-lg font-medium flex items-center transition-all">
+            <button id="btn-gerar-pdf-resumo" class="bg-white hover:bg-gray-100 text-gray-700 border border-gray-300 py-4 px-12 rounded-xl shadow-lg font-medium flex items-center transition-all">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                 Resumo Simples
             </button>
@@ -302,21 +310,21 @@
             tr.dataset.id = item.id;
             tr.innerHTML = `
                 <td class="py-3 px-4"><input type="checkbox" class="capex-check h-4 w-4 text-cyan-600" checked></td>
-                <td class="py-3 px-4 font-medium text-gray-800">${item.produto}</td>
+                <td class="py-3 px-4 font-medium text-gray-800 text-xs">${item.produto}</td>
                 <td class="py-3 px-4 text-center">
-                    <input type="number" class="capex-qtd w-16 border rounded text-center" value="${item.qtd}">
+                    <input type="number" class="capex-qtd w-14 border rounded text-center text-xs" value="${item.qtd}">
                 </td>
                 <td class="py-3 px-4 space-y-1">
-                    <div class="flex items-center text-xs">
+                    <div class="flex items-center text-[10px]">
                         <input type="radio" name="r_${item.id}" value="aquisicao" class="mr-1" checked>
-                        <span>Aq.: <input type="number" class="capex-vlr-base w-20 border rounded" value="${item.vlrAquisicao}"></span>
+                        <span>Aq.: <input type="number" class="capex-vlr-base w-20 border rounded px-1" value="${item.vlrAquisicao}"></span>
                     </div>
-                    <div class="flex items-center text-xs text-gray-500">
+                    <div class="flex items-center text-[10px] text-gray-500">
                         <input type="radio" name="r_${item.id}" value="locacao" class="mr-1">
-                        <span>${labelLoc}: <span class="capex-display-locacao">${fmtBRL(item.vlrAquisicao * perc)}</span></span>
+                        <span>${labelLoc}: <span class="capex-display-locacao font-bold">${fmtBRL(item.vlrAquisicao * perc)}</span></span>
                     </div>
                 </td>
-                <td class="py-3 px-4 text-right font-bold capex-total-item">R$ 0,00</td>
+                <td class="py-3 px-4 text-right font-bold text-xs capex-total-item text-gray-900">R$ 0,00</td>
             `;
             capexTableEl.appendChild(tr);
         });
@@ -336,20 +344,24 @@
         document.getElementById('total-alunos-final').innerText = totalAlFinal;
 
         const periodo = 9;
+        const diasLetivos = 180; // 5 dias x 4 semanas x 9 meses aprox
         const modeloH = parseFloat(document.getElementById('opex-modelo-atendimento').value);
         const bolsaM = parseFloat(document.getElementById('opex-bolsa-monitor').value);
         const horaP = parseFloat(document.getElementById('opex-valor-hora-professor').value);
+        const valorRef = parseFloat(document.getElementById('opex-valor-refeicao').value) || 0;
         const salA = parseFloat(document.getElementById('opex-custo-assistente').value);
         const salA2 = parseFloat(document.getElementById('opex-custo-analista2').value);
         const salA3 = parseFloat(document.getElementById('opex-custo-analista3').value);
 
         const cMon = turmas * bolsaM * periodo;
         const cProf = turmas * modeloH * horaP;
-        const cEq = ((1 * salA) + (1 * salA2) + (2 * salA3)) * periodo; // 1 para projeto piloto
-        const totalOpex = cMon + cProf + cEq;
+        const cRef = totalAlFinal * valorRef * diasLetivos;
+        const cEq = ((1 * salA) + (1 * salA2) + (2 * salA3)) * periodo; 
+        const totalOpex = cMon + cProf + cRef + cEq;
 
         document.getElementById('opex-custo-monitores').innerText = fmtBRL(cMon);
         document.getElementById('opex-custo-professores').innerText = fmtBRL(cProf);
+        document.getElementById('opex-custo-refeicoes').innerText = fmtBRL(cRef);
         document.getElementById('opex-custo-equipe').innerText = fmtBRL(cEq);
         document.getElementById('opex-total-anual').innerText = fmtBRL(totalOpex);
         document.getElementById('total-opex-consolidado').innerText = fmtBRL(totalOpex);
@@ -360,7 +372,8 @@
             const isChecked = row.querySelector('.capex-check').checked;
             const qtd = parseFloat(row.querySelector('.capex-qtd').value) || 0;
             const vlrB = parseFloat(row.querySelector('.capex-vlr-base').value) || 0;
-            const opt = row.querySelector('input[type=radio]:checked').value;
+            const radioEl = row.querySelector('input[type=radio]:checked');
+            const opt = radioEl ? radioEl.value : 'aquisicao';
             const perc = itemData.locacao50 ? 0.5 : 0.3;
 
             row.querySelector('.capex-display-locacao').innerText = fmtBRL(vlrB * perc);
@@ -384,12 +397,13 @@
         const vAdj = sub * adj;
         const totalG = sub + vAdj;
 
-        document.getElementById('bl4-ajuste-pagamento-display').innerText = `Ajuste: ${vAdj >= 0 ? '+' : ''}${fmtBRL(vAdj)}`;
+        document.getElementById('bl4-ajuste-pagamento-display').innerText = `Ajuste Financeiro: ${vAdj >= 0 ? '+' : ''}${fmtBRL(vAdj)}`;
         document.getElementById('total-geral-proposta').innerText = fmtBRL(totalG);
 
+        // Bloco 5 Margem
         const hReal = parseFloat(document.getElementById('bl5-margem-custo-hora-professor').value) || 0;
         const mCapex = parseFloat(document.getElementById('bl5-margem-capex-percent').value) || 0;
-        const opexReal = (turmas * modeloH * hReal) + cMon + cEq;
+        const opexReal = (turmas * modeloH * hReal) + cMon + cRef + cEq;
         const capexReal = tCapex / (1 + mCapex/100);
         const custoTotalReal = opexReal + capexReal;
         const lucro = totalG - custoTotalReal;
@@ -402,7 +416,6 @@
         document.getElementById('bl5-margem-regua-lucro').style.width = `${Math.min(100, Math.max(0, pLucro))}%`;
     }
 
-    // PDF 
     function addPdfHeaderWithLogo(doc, pageNum, pageCount) {
         const logoImg = document.getElementById('logo-pdf');
         const today = new Date().toLocaleDateString('pt-BR');
@@ -433,7 +446,6 @@
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
         
-        // PÁGINA 1: RESUMO DO PROJETO E OPEX
         doc.setFontSize(14);
         doc.setTextColor(0, 100, 150);
         doc.text("1. Dimensionamento do Escopo e Docência", 15, 45);
@@ -454,8 +466,9 @@
         });
 
         const bodyOpex = [
-            ['Custos com Monitores (9 Meses)', document.getElementById('opex-custo-monitores').innerText],
+            ['Custos com Monitores (1 por Turma)', document.getElementById('opex-custo-monitores').innerText],
             ['Custos com Professores (Docência)', document.getElementById('opex-custo-professores').innerText],
+            ['Custos com Refeição (Alunos/Dia)', document.getElementById('opex-custo-refeicoes').innerText],
             ['Custos com Equipe Técnica e Apoio', document.getElementById('opex-custo-equipe').innerText],
             [{ content: 'INVESTIMENTO OPERACIONAL (OPEX)', styles: { fontStyle: 'bold' } }, 
              { content: document.getElementById('total-opex-consolidado').innerText, styles: { fontStyle: 'bold' } }]
@@ -470,7 +483,6 @@
         });
 
         if(!resumo) {
-            // PÁGINA 2: CAPEX DETALHADO
             doc.addPage();
             doc.setFontSize(14);
             doc.setTextColor(0, 100, 150);
@@ -504,7 +516,6 @@
                 headStyles: { fillColor: [80, 80, 80] }
             });
 
-            // PÁGINA 3: CONSOLIDAÇÃO FINAL
             doc.addPage();
             doc.setFontSize(14);
             doc.setTextColor(0, 100, 150);
@@ -517,9 +528,9 @@
                 theme: 'grid',
                 head: [['Consolidação de Investimento', 'Valor']],
                 body: [
-                    ['Total OPEX (Anual)', document.getElementById('total-opex-consolidado').innerText],
+                    ['Total OPEX (Pessoal e Refeição)', document.getElementById('total-opex-consolidado').innerText],
                     ['Total CAPEX (Aquisição/Materiais)', document.getElementById('total-capex-consolidado').innerText],
-                    ['Ajuste de Condição de Pagamento', document.getElementById('bl4-ajuste-pagamento-display').innerText.replace('Ajuste: ', '')],
+                    ['Ajuste de Condição de Pagamento', document.getElementById('bl4-ajuste-pagamento-display').innerText.replace('Ajuste Financeiro: ', '')],
                     [{ content: 'VALOR TOTAL DA PARCERIA', styles: { fontStyle: 'bold', fontSize: 12, fillColor: [240, 240, 240] } }, 
                      { content: document.getElementById('total-geral-proposta').innerText, styles: { fontStyle: 'bold', fontSize: 12, fillColor: [240, 240, 240] } }]
                 ],
@@ -531,7 +542,6 @@
             doc.text(`Condição de Pagamento selecionada: ${condTxt}`, 15, doc.lastAutoTable.finalY + 10);
         }
 
-        // Aplica Cabeçalho e Rodapé em todas as páginas
         const pageCount = doc.internal.getNumberOfPages();
         for(let i=1; i<=pageCount; i++) {
             doc.setPage(i);
@@ -544,7 +554,7 @@
     // Listeners
     acrescimoEl.addEventListener('input', calcular);
     document.getElementById('opex-modelo-atendimento').addEventListener('change', calcular);
-    ['opex-bolsa-monitor', 'opex-valor-hora-professor', 'opex-custo-assistente', 'opex-custo-analista2', 'opex-custo-analista3']
+    ['opex-bolsa-monitor', 'opex-valor-hora-professor', 'opex-valor-refeicao', 'opex-custo-assistente', 'opex-custo-analista2', 'opex-custo-analista3']
     .forEach(id => document.getElementById(id).addEventListener('input', calcular));
     
     capexTableEl.addEventListener('input', calcular);
